@@ -1,6 +1,7 @@
 import * as React from "react"
 import { graphql } from 'gatsby'
 import { GatsbyImage } from "gatsby-plugin-image"
+import * as styles from '../styles/Home.module.css'
 
 const Home = ({ data }) => {
   const galleries = data.allFile.group
@@ -13,9 +14,9 @@ const Home = ({ data }) => {
       </head>
 
       <main>
-        <div>
+        <div className={styles.outer}>
           { galleries.map( (gallery) => (
-            <article key={gallery.fieldValue}>
+            <article className={styles.inner} key={gallery.fieldValue}>
               <GatsbyImage
                 image={gallery.nodes[0].childImageSharp.gatsbyImageData}
                 alt={gallery.nodes[0].name}
