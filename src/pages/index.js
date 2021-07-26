@@ -1,6 +1,9 @@
-import React from "react"
+import * as React from "react"
+import { graphql } from 'gatsby'
 
-export default function Home() {
+const Home = ({ data }) => {
+  const galleries = data.allFile.group
+
   return (
     <div>
       <head>
@@ -11,35 +14,36 @@ export default function Home() {
       <main>
         {/* <div className={styles.outer} style={{columns: props.columns}}> */}
         <div>
-          {/* { props.galleries.map( (gallery) => (
-            <article className={styles.inner} key={gallery.title}>
-              <Link href={gallery.webPath} > 
-                  <a>
-                    <img
-                      src={gallery.thumbnail}
-                      alt={gallery.title}
-                      width="180"
-                      height="180" />
-                  </a>
-              </Link>
-            <h2>{gallery.title}</h2>
+          { galleries.map( (gallery) => (
+            <article key={gallery.fieldValue}>
+              {/* <img
+                src={gallery.thumbnail}
+                alt={gallery.title}
+                width="180"
+                height="180" /> */}
+            <h2>{gallery.fieldValue}</h2>
             </article>
-          ))} */}
-          <article>Galleris go here</article>
+          ))}
+          {/* <article>
+            <pre>{JSON.stringify(data, null, 4)}</pre>
+          </article> */}
         </div>
       </main>
     </div>
   )
 }
 
-// export async function getStaticProps(context) {
-//   var globalConfig = await getGlobalConfig();
-//   var galleries = await getGalleries();
-
-//   const obj = {props: {
-//       columns: 2,
-//       ...galleries,
-//       ...globalConfig}}
-//   // console.log(JSON.stringify(obj.props.columns));
-//   return obj;
-// }
+export const query = graphql`
+query {
+  allFile(filter: {relativePath: {ne: ""}, sourceInstanceName: {eq: "galleries"}}) {
+    group(field: relativeDirectory) {
+      fieldValue
+      nodes {
+        id
+        name
+      }
+    }
+  }
+}
+`
+export default Home

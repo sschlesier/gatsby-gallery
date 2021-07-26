@@ -68,5 +68,5 @@ yarn-error.log
 # Yarn Integrity file
 .yarn-integrity
 
-# Ignore src/images while building theme
-src/images/
+# Ignore src/galleries while building theme
+src/galleries/
