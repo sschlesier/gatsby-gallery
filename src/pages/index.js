@@ -1,5 +1,6 @@
 import * as React from "react"
 import { graphql } from 'gatsby'
+import { GatsbyImage } from "gatsby-plugin-image"
 
 const Home = ({ data }) => {
   const galleries = data.allFile.group
@@ -12,16 +13,14 @@ const Home = ({ data }) => {
       </head>
 
       <main>
-        {/* <div className={styles.outer} style={{columns: props.columns}}> */}
         <div>
           { galleries.map( (gallery) => (
             <article key={gallery.fieldValue}>
-              {/* <img
-                src={gallery.thumbnail}
-                alt={gallery.title}
-                width="180"
-                height="180" /> */}
-            <h2>{gallery.fieldValue}</h2>
+              <GatsbyImage
+                image={gallery.nodes[0].childImageSharp.gatsbyImageData}
+                alt={gallery.nodes[0].name}
+              />
+              <h2>{gallery.fieldValue}</h2>
             </article>
           ))}
           {/* <article>
@@ -36,14 +35,18 @@ const Home = ({ data }) => {
 export const query = graphql`
 query {
   allFile(filter: {relativePath: {ne: ""}, sourceInstanceName: {eq: "galleries"}}) {
-    group(field: relativeDirectory) {
+    group(field: relativeDirectory, limit: 1) {
       fieldValue
       nodes {
-        id
         name
+        childImageSharp {
+          gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [WEBP])
+        }
       }
     }
   }
 }
+
+
 `
 export default Home
