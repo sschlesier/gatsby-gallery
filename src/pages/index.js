@@ -41,7 +41,7 @@ query {
       nodes {
         name
         childImageSharp {
-          gatsbyImageData(width: 180, height: 180, placeholder: BLURRED, formats: [WEBP])
+          gatsbyImageData(placeholder: BLURRED, formats: [WEBP])
         }
       }
     }
