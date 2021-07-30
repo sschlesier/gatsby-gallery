@@ -1,5 +1,5 @@
-exports.onCreateNode = ({ node, getNode, actions }) => {
-    const { createNodeField } = actions;
+exports.onCreateNode = ({ node, getNode, actions, createNodeId, createContentDigest }) => {
+    const { createNode, createNodeField } = actions;
     if (node.internal.type === 'ImageSharp') {
       const parent = getNode(node.parent);
 
@@ -9,38 +9,19 @@ exports.onCreateNode = ({ node, getNode, actions }) => {
           images: [],
       }
 
-      createNodeField({
-        node,
-        name: 'gallery',
-        value: gallery,
-      });
+      // createNodeField({
+      //   node,
+      //   name: 'gallery',
+      //   value: gallery,
+      // });
+
+      createNode({
+        ...gallery,
+        id: createNodeId(parent.id),
+        internal: {
+          type: 'gallery',
+          contentDigest: createContentDigest(gallery),
+        },
+      })
     }
-}
-
-exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
-  var data = {
-    fee: "fi"
-  }
-
-  actions.createNode({
-    ...data,
-    id: createNodeId(data.fee),
-    internal: {
-      type: 'gallery',
-      contentDigest: createContentDigest(data),
-    },
-  })
-
-  data = {
-    fee: "fum"
-  }
-
-  actions.createNode({
-    ...data,
-    id: createNodeId(data.fee),
-    internal: {
-      type: 'gallery',
-      contentDigest: createContentDigest(data),
-    },
-  })
 }
