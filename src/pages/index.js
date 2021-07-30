@@ -47,7 +47,6 @@ query {
     }
   }
 }
-
-
 `
+
 export default Home
