@@ -1,25 +1,42 @@
-const galleries = [];
+const galleries = new Map();
 
 function createGallery(node) {
   const gallery = {
     name: node.relativePath,
     parent: node.id
+  };
+
+  galleries.set(gallery.name, gallery);
+}
+
+function addImageToGallery(node, parentNode) {
+  const name = parentNode.relativeDirectory;
+  const gallery = galleries.get(name);
+
+  if( gallery.thumbnail === undefined ) {
+    gallery.thumbnail = node;
   }
 
-  galleries.push(gallery);
+  if( gallery.images === undefined ) {
+    gallery.images = [];
+  }
+
+  gallery.images.push(node);
 }
 
 exports.onCreateNode = ({ node, getNode, actions, createNodeId, createContentDigest }) => {
   if (node.internal.type === 'Directory' && node.relativePath != "") {
     createGallery(node);
   }
+  else if ( node.internal.type === 'ImageSharp') {
+    addImageToGallery(node, getNode(node.parent))
+  }
 }
 
 exports.sourceNodes = ({ actions, createContentDigest, createNodeId }) => {
   const { createNode } = actions;
-  console.log('creating galleries: ' + galleries.length); //todo use the info log level
 
-  galleries.forEach(gallery =>
+  for (const [_, gallery] of galleries) {
     createNode({
       ...gallery,
       id: createNodeId(gallery.parent),
@@ -28,5 +45,5 @@ exports.sourceNodes = ({ actions, createContentDigest, createNodeId }) => {
         contentDigest: createContentDigest(gallery),
       },
     })
-  );
+  }
 }
