@@ -1,5 +1,5 @@
 import * as React from "react"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import { GatsbyImage } from "gatsby-plugin-image"
 import * as styles from "../styles/Home.module.css"
 
@@ -18,10 +18,12 @@ const Home = ({ data }) => {
         <div className={styles.outer}>
           {galleries.map(gallery => (
             <article className={styles.inner} key={gallery.fieldValue}>
-              <GatsbyImage
-                image={gallery.nodes[0].childImageSharp.gatsbyImageData}
-                alt={gallery.nodes[0].name}
-              />
+              <Link to={gallery.fieldValue}>
+                <GatsbyImage
+                  image={gallery.nodes[0].childImageSharp.gatsbyImageData}
+                  alt={gallery.nodes[0].name}
+                />
+              </Link>
               <h2>{gallery.fieldValue}</h2>
             </article>
           ))}
