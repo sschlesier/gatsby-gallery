@@ -9,8 +9,8 @@ const Home = ({ data }) => {
   return (
     <div>
       <head>
-        <title>A Gallery</title>{" "}
         {/* todo use a config value for title and description */}
+        <title>A Gallery</title>
         <link rel="icon" href="/favicon.ico" />
       </head>
 
