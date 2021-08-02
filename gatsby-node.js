@@ -25,11 +25,20 @@ function addImageToGallery(node, parentNode) {
   gallery.images___NODE.push(node.id)
 }
 
+function applyYamlToGallery(node, parentNode) {
+  const name = parentNode.relativeDirectory
+  const gallery = galleries.get(name)
+
+  gallery.name = node.name || gallery.name
+}
+
 exports.onCreateNode = ({ node, getNode }) => {
   if (node.internal.type === "Directory" && node.relativePath != "") {
     createGallery(node)
   } else if (node.internal.type === "ImageSharp") {
     addImageToGallery(node, getNode(node.parent))
+  } else if (node.internal.owner === "gatsby-transformer-yaml") {
+    applyYamlToGallery(node, getNode(node.parent))
   }
 }
 
