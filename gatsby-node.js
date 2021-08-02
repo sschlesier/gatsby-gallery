@@ -13,15 +13,15 @@ function addImageToGallery(node, parentNode) {
   const name = parentNode.relativeDirectory
   const gallery = galleries.get(name)
 
-  if (gallery.thumbnail === undefined) {
-    gallery.thumbnail = node
+  if (gallery.thumbnail___NODE === undefined) {
+    gallery.thumbnail___NODE = node.id
   }
 
-  if (gallery.images === undefined) {
-    gallery.images = []
+  if (gallery.images___NODE === undefined) {
+    gallery.images___NODE = []
   }
 
-  gallery.images.push(node)
+  gallery.images___NODE.push(node.id)
 }
 
 exports.onCreateNode = ({ node, getNode }) => {
