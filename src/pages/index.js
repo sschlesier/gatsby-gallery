@@ -4,7 +4,7 @@ import { GatsbyImage } from "gatsby-plugin-image"
 import * as styles from "../styles/Home.module.css"
 
 const Home = ({ data }) => {
-  const galleries = data.allFile.group
+  const galleries = data.allGallery.nodes
 
   return (
     <div>
@@ -17,20 +17,18 @@ const Home = ({ data }) => {
       <main>
         <div className={styles.outer}>
           {galleries.map(gallery => (
-            <article className={styles.inner} key={gallery.fieldValue}>
-              <Link to={gallery.fieldValue}>
+            <article className={styles.inner} key={gallery.name}>
+              <Link to={gallery.name}>
                 <GatsbyImage
-                  image={gallery.nodes[0].childImageSharp.gatsbyImageData}
-                  alt={gallery.nodes[0].name}
+                  image={gallery.thumbnail.gatsbyImageData}
+                  alt={gallery.thumbnail.parent.name}
                 />
               </Link>
-              <h2>{gallery.fieldValue}</h2>
+              <h2>{gallery.name}</h2>
             </article>
           ))}
-          {/* <article>
-            <pre>{JSON.stringify(data, null, 4)}</pre>
-          </article> */}
         </div>
+        {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
       </main>
     </div>
   )
@@ -38,19 +36,16 @@ const Home = ({ data }) => {
 
 export const query = graphql`
   query {
-    allFile(
-      filter: {
-        relativePath: { ne: "" }
-        sourceInstanceName: { eq: "galleries" }
-      }
-    ) {
-      group(field: relativeDirectory, limit: 1) {
-        fieldValue
-        nodes {
-          name
-          childImageSharp {
-            gatsbyImageData(placeholder: BLURRED, formats: [WEBP])
+    allGallery {
+      nodes {
+        name
+        thumbnail {
+          parent {
+            ... on File {
+              name
+            }
           }
+          gatsbyImageData(placeholder: BLURRED, formats: [WEBP])
         }
       }
     }
