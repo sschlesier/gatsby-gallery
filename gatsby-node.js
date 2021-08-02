@@ -1,4 +1,5 @@
 const galleries = new Map()
+const path = require("path")
 
 function createGallery(node) {
   const gallery = {
@@ -45,4 +46,34 @@ exports.sourceNodes = ({ actions, createContentDigest, createNodeId }) => {
       },
     })
   }
+}
+
+exports.createPages = async ({ actions, graphql, reporter }) => {
+  const result = await graphql(
+    `
+      {
+        allGallery {
+          nodes {
+            name
+          }
+        }
+      }
+    `
+  )
+
+  if (result.errors) {
+    reporter.panicOnBuild(`Error while running GraphQL query.`)
+    return
+  }
+
+  const galleryTemplatePath = path.resolve("src/templates/gallery.js")
+  result.data.allGallery.nodes.forEach(gallery => {
+    actions.createPage({
+      path: gallery.name,
+      component: galleryTemplatePath,
+      context: {
+        galleryName: gallery.name,
+      },
+    })
+  })
 }
