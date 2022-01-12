@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "babel-jest": "^27.4.6",
-    "babel-preset-gatsby": "^2.4.0",
+    "babel-preset-gatsby": "^2.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.7",
     "prettier": "2.5.1",
